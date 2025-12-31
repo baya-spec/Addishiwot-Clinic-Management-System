@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.addishiwot;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;

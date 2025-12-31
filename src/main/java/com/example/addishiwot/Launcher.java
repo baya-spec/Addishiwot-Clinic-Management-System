@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.addishiwot;
 
 import javafx.application.Application;
 

@@ -1,12 +1,12 @@
-package com.example.demo;
+package com.example.addishiwot;
 
-public class Examiner {
+public class Pharmacy {
     private String name;
     private String username;
     private String password;
     private boolean isActive;
 
-    public Examiner(String name, String username, String password) {
+    public Pharmacy(String name, String username, String password) {
         this.name = name;
         this.username = username;
         this.password = password;

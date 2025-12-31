@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.addishiwot;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,9 +10,9 @@ import java.io.InputStreamReader;
 import java.util.stream.Collectors;
 
 public class Database {
-    private static final String URL = "jdbc:mysql://localhost:8000/AddisHiwot-Clinic";
-    private static final String USER = "root";
-    private static final String PASSWORD = "1234";
+    private static final String URL = "your database url here";
+    private static final String USER = "your username here";
+    private static final String PASSWORD = "your password here";
 
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASSWORD);

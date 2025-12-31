@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.addishiwot;
 
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
