@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+<?import org.controlsfx.control.CheckComboBox?>
+
+<StackPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.demo.HelloController" stylesheets="@styles.css">
+    <!-- Role Selection View -->
+    <VBox fx:id="roleSelectionView" alignment="CENTER" spacing="40.0" styleClass="roleSelectionView">
+        <padding>
+            <Insets bottom="40.0" left="40.0" right="40.0" top="40.0"/>
+        </padding>
+
+        <VBox alignment="CENTER" spacing="5" styleClass="logo-container">
+            <HBox alignment="CENTER" spacing="10">
+                <Label text="✚" styleClass="logo-symbol"/>
+                <Label text="MEDICARE" styleClass="logo-title"/>
+            </HBox>
+            <Label text="Addis Hiwot Medium Clinic" styleClass="logo-subtitle"/>
+        </VBox>
+
+        <VBox spacing="30" alignment="CENTER" maxWidth="800">
+            <Label text="Select Your Role to Login" styleClass="sub-header-label" style="-fx-font-size: 18px; -fx-text-fill: #546E7A;"/>
+
+            <HBox spacing="30" alignment="CENTER">
+                <Button text="Administrator" onAction="#onSelectAdminRole" styleClass="role-button">
+                    <graphic>
+                        <Label text="⚙" styleClass="role-icon"/>
+                    </graphic>
+                </Button>
+                <Button text="Receptionist" onAction="#onSelectReceptionRole" styleClass="role-button">
+                    <graphic>
+                        <Label text="📋" styleClass="role-icon"/>
+                    </graphic>
+                </Button>
+                <Button text="Examiner" onAction="#onSelectExaminerRole" styleClass="role-button">
+                    <graphic>
+                        <Label text="🩺" styleClass="role-icon"/>
+                    </graphic>
+                </Button>
+                <Button text="Doctor" onAction="#onSelectDoctorRole" styleClass="role-button">
+                    <graphic>
+                        <Label text="👨‍⚕" styleClass="role-icon"/>
+                    </graphic>
+                </Button>
+                <Button text="Laboratory" onAction="#onSelectLaboratoryRole" styleClass="role-button">
+                    <graphic>
+                        <Label text="🧪" styleClass="role-icon"/>
+                    </graphic>
+                </Button>
+                <Button text="Pharmacy" onAction="#onSelectPharmacyRole" styleClass="role-button">
+                    <graphic>
+                        <Label text="💊" styleClass="role-icon"/>
+                    </graphic>
+                </Button>
+            </HBox>
+        </VBox>
+    </VBox>
+
+    <!-- Login Form View (Initially Hidden) -->
+    <VBox fx:id="loginFormView" alignment="CENTER" spacing="20.0" visible="false" styleClass="root">
+        <VBox styleClass="card" maxWidth="450" spacing="25" alignment="CENTER">
+            <Label text="Login" styleClass="header-label"/>
+            <Label fx:id="loginRoleLabel" styleClass="sub-header-label"/>
+
+            <GridPane hgap="15" vgap="20" alignment="CENTER" styleClass="form-grid">
+                <Label text="Username:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                <TextField fx:id="usernameField" GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="220"/>
+                <Label text="Password:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                <StackPane alignment="CENTER_RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <PasswordField fx:id="passwordField" prefWidth="220"/>
+                    <TextField fx:id="passwordTextField" prefWidth="220" visible="false"/>
+                    <Button fx:id="togglePasswordButton" onAction="#togglePasswordVisibility" styleClass="toggle-button" text="👁"/>
+                </StackPane>
+            </GridPane>
+
+            <HBox spacing="20" alignment="CENTER" style="-fx-padding: 10 0 0 0;">
+                <Button text="Login" onAction="#onLoginSubmit" prefWidth="130"/>
+                <Button text="Back" onAction="#onBackToHome" prefWidth="130" styleClass="button-outline"/>
+            </HBox>
+
+            <Hyperlink fx:id="signUpLink" text="Don't have an account? Sign Up" onAction="#onSignUpClick" visible="false"/>
+
+            <Label fx:id="loginStatusLabel" styleClass="status-label, status-error"/>
+        </VBox>
+    </VBox>
+
+    <!-- Sign Up Form View (Initially Hidden) -->
+    <VBox fx:id="signUpFormView" alignment="CENTER" spacing="20.0" visible="false" styleClass="root">
+        <VBox styleClass="card" maxWidth="500" spacing="20" alignment="CENTER">
+            <Label text="Staff Registration" styleClass="header-label"/>
+            <Label fx:id="signUpRoleLabel" styleClass="sub-header-label"/>
+
+            <GridPane hgap="15" vgap="15" alignment="CENTER" styleClass="form-grid">
+                <Label text="Full Name:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                <TextField fx:id="signUpNameField" GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="220"/>
+
+                <Label text="Username:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                <TextField fx:id="signUpUsernameField" GridPane.columnIndex="1" GridPane.rowIndex="1" prefWidth="220"/>
+
+                <Label text="Password:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                <VBox GridPane.columnIndex="1" GridPane.rowIndex="2" spacing="5">
+                    <StackPane alignment="CENTER_RIGHT">
+                        <PasswordField fx:id="signUpPasswordField" prefWidth="220"/>
+                        <TextField fx:id="signUpPasswordTextField" prefWidth="220" visible="false"/>
+                        <Button fx:id="toggleSignUpPasswordButton" onAction="#toggleSignUpPasswordVisibility" styleClass="toggle-button" text="👁"/>
+                    </StackPane>
+                    <VBox fx:id="passwordValidationVBox" spacing="2" style="-fx-padding: 5 0 0 0;">
+                        <Label fx:id="lengthRuleLabel"/>
+                        <Label fx:id="letterRuleLabel"/>
+                        <Label fx:id="digitRuleLabel"/>
+                        <Label fx:id="specialCharRuleLabel"/>
+                    </VBox>
+                </VBox>
+
+                <Label text="Confirm Password:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                <PasswordField fx:id="signUpConfirmPasswordField" GridPane.columnIndex="1" GridPane.rowIndex="3" prefWidth="220"/>
+
+                <Label text="Registration Date:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                <DatePicker fx:id="signUpDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="4" editable="false"/>
+
+                <!-- Doctor Specific Fields -->
+                <Label fx:id="signUpSpecLabel" text="Specialty:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+                <TextField fx:id="signUpSpecField" GridPane.columnIndex="1" GridPane.rowIndex="5" prefWidth="220"/>
+
+                <Label fx:id="signUpDaysLabel" text="Available Days:" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+                <CheckComboBox fx:id="signUpDaysPicker" GridPane.columnIndex="1" GridPane.rowIndex="6" prefWidth="220"/>
+
+                <Label fx:id="signUpAvailableTimeLabel" text="Available Time:" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
+                <ComboBox fx:id="signUpAvailableTimePicker" GridPane.columnIndex="1" GridPane.rowIndex="7" prefWidth="220"/>
+            </GridPane>
+
+            <HBox spacing="20" alignment="CENTER" style="-fx-padding: 10 0 0 0;">
+                <Button fx:id="signUpSubmitButton" text="Submit Request" onAction="#onSignUpSubmit" prefWidth="150"/>
+                <Button text="Cancel" onAction="#onSignUpCancel" prefWidth="130" styleClass="button-outline"/>
+            </HBox>
+            <Label fx:id="signUpStatusLabel" styleClass="status-label"/>
+        </VBox>
+    </VBox>
+
+    <!-- Main Application View (Hidden by default) -->
+    <BorderPane fx:id="mainAppView" visible="false" styleClass="root">
+        <top>
+            <HBox alignment="CENTER_RIGHT" spacing="20" styleClass="top-bar">
+                <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS" spacing="8">
+                    <Label text="✚" styleClass="logo-symbol" style="-fx-font-size: 24px;"/>
+                    <Label text="MEDICARE" styleClass="logo-title" style="-fx-font-size: 20px;"/>
+                </HBox>
+                <HBox spacing="10" alignment="CENTER">
+                    <TextField fx:id="globalSearchField" promptText="Search Patient by Phone..."/>
+                    <Button text="Search" onAction="#onGlobalPatientSearchClick"/>
+                </HBox>
+                <Label fx:id="currentUserLabel" style="-fx-font-weight: bold; -fx-text-fill: #546E7A; -fx-font-size: 14px;"/>
+                <Button text="➔" onAction="#onLogout" styleClass="button-danger"/>
+            </HBox>
+        </top>
+        <center>
+            <TabPane fx:id="mainTabPane" style="-fx-padding: 25;">
+                <tabs>
+                    <Tab fx:id="adminTab" text="Admin Dashboard" closable="false">
+                        <ScrollPane fitToWidth="true" fitToHeight="true" style="-fx-background-color: transparent; -fx-background: transparent;">
+                            <VBox spacing="25" alignment="TOP_LEFT" styleClass="card">
+                                <Label text="Staff Management" styleClass="header-label"/>
+                                <Label fx:id="adminStatusLabel" styleClass="status-label"/>
+
+                                <TabPane>
+                                    <tabs>
+                                        <Tab text="Doctors" closable="false">
+                                            <VBox spacing="15" style="-fx-padding: 15;">
+                                                <Label text="Doctor Registration Requests" styleClass="sub-header-label"/>
+                                                <HBox spacing="10">
+                                                    <Button text="Approve Selected" onAction="#onAdminApproveDoctorClick" styleClass="button-secondary"/>
+                                                    <Button text="Remove Selected" onAction="#onAdminRemoveDoctorClick" styleClass="button-danger"/>
+                                                </HBox>
+                                                <ListView fx:id="adminDoctorsListView" prefHeight="250"/>
+                                            </VBox>
+                                        </Tab>
+                                        <Tab text="Examiners" closable="false">
+                                            <VBox spacing="15" style="-fx-padding: 15;">
+                                                <Label text="Examiner Registration Requests" styleClass="sub-header-label"/>
+                                                <HBox spacing="10">
+                                                    <Button text="Approve Selected" onAction="#onAdminApproveExaminerClick" styleClass="button-secondary"/>
+                                                    <Button text="Remove Selected" onAction="#onAdminRemoveExaminerClick" styleClass="button-danger"/>
+                                                </HBox>
+                                                <ListView fx:id="adminExaminersListView" prefHeight="250"/>
+                                            </VBox>
+                                        </Tab>
+                                        <Tab text="Laboratory" closable="false">
+                                            <VBox spacing="15" style="-fx-padding: 15;">
+                                                <Label text="Laboratory Registration Requests" styleClass="sub-header-label"/>
+                                                <HBox spacing="10">
+                                                    <Button text="Approve Selected" onAction="#onAdminApproveLaboratoryClick" styleClass="button-secondary"/>
+                                                    <Button text="Remove Selected" onAction="#onAdminRemoveLaboratoryClick" styleClass="button-danger"/>
+                                                </HBox>
+                                                <ListView fx:id="adminLaboratoriesListView" prefHeight="250"/>
+                                            </VBox>
+                                        </Tab>
+                                        <Tab text="Pharmacy" closable="false">
+                                            <VBox spacing="15" style="-fx-padding: 15;">
+                                                <Label text="Pharmacy Registration Requests" styleClass="sub-header-label"/>
+                                                <HBox spacing="10">
+                                                    <Button text="Approve Selected" onAction="#onAdminApprovePharmacyClick" styleClass="button-secondary"/>
+                                                    <Button text="Remove Selected" onAction="#onAdminRemovePharmacyClick" styleClass="button-danger"/>
+                                                </HBox>
+                                                <ListView fx:id="adminPharmaciesListView" prefHeight="250"/>
+                                            </VBox>
+                                        </Tab>
+                                    </tabs>
+                                </TabPane>
+                            </VBox>
+                        </ScrollPane>
+                    </Tab>
+                    <Tab fx:id="reportsTab" text="Reports" closable="false">
+                        <ScrollPane fitToWidth="true" fitToHeight="true" style="-fx-background-color: transparent; -fx-background: transparent;">
+                            <VBox spacing="25" alignment="TOP_LEFT" styleClass="card">
+                                <Label text="Clinic Operations Report" styleClass="header-label"/>
+                                <HBox spacing="20">
+                                    <VBox spacing="10" style="-fx-background-color: #E3F2FD; -fx-padding: 15; -fx-background-radius: 8;" prefWidth="200">
+                                        <Label text="Total Patients" styleClass="sub-header-label"/>
+                                        <Label fx:id="totalPatientsLabel" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+                                    </VBox>
+                                    <VBox spacing="10" style="-fx-background-color: #E8F5E9; -fx-padding: 15; -fx-background-radius: 8;" prefWidth="200">
+                                        <Label text="Treated Patients" styleClass="sub-header-label"/>
+                                        <Label fx:id="treatedPatientsLabel" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+                                    </VBox>
+                                </HBox>
+                                <Label text="Doctor Workload:" styleClass="sub-header-label"/>
+                                <TextArea fx:id="doctorWorkloadArea" prefHeight="200" editable="false"/>
+                                <Button text="Refresh Reports" onAction="#onRefreshReportsClick" styleClass="button-outline"/>
+                            </VBox>
+                        </ScrollPane>
+                    </Tab>
+                    <Tab fx:id="receptionTab" text="Reception Dashboard" closable="false">
+                        <ScrollPane fitToWidth="true" fitToHeight="true" style="-fx-background-color: transparent; -fx-background: transparent;">
+                            <VBox spacing="25" alignment="TOP_LEFT" styleClass="card">
+                                <Label text="Reception Dashboard" styleClass="header-label"/>
+
+                                <HBox spacing="30">
+                                    <!-- New Patient Registration -->
+                                    <VBox spacing="15" style="-fx-background-color: #F1F8E9; -fx-padding: 25; -fx-background-radius: 12;" HBox.hgrow="ALWAYS">
+                                        <Label text="New Patient Registration" styleClass="sub-header-label" style="-fx-text-fill: #2E7D32;"/>
+                                        <GridPane hgap="15" vgap="15" styleClass="form-grid">
+                                            <Label text="First Name:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                                            <TextField fx:id="firstNameField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                                            <Label text="Second Name:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                                            <TextField fx:id="secondNameField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                                            <Label text="Last Name:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                                            <TextField fx:id="lastNameField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                                            <Label text="Age:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                                            <TextField fx:id="patientAgeField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                                            <Label text="Gender:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                                            <ComboBox fx:id="genderComboBox" GridPane.columnIndex="1" GridPane.rowIndex="4" prefWidth="200"/>
+                                            <Label text="Address:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+                                            <TextField fx:id="addressField" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+                                            <Label text="Phone Number:" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+                                            <TextField fx:id="phoneNumberField" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+                                        </GridPane>
+                                        <Button text="Register Patient" onAction="#onRegisterPatientClick" styleClass="button-secondary"/>
+                                    </VBox>
+
+                                    <!-- Existing Patient Login -->
+                                    <VBox spacing="15" style="-fx-background-color: #E3F2FD; -fx-padding: 25; -fx-background-radius: 12;" HBox.hgrow="ALWAYS">
+                                        <Label text="Existing Patient Login" styleClass="sub-header-label" style="-fx-text-fill: #1565C0;"/>
+                                        <GridPane hgap="15" vgap="15" styleClass="form-grid">
+                                            <Label text="Patient Phone Number:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                                            <TextField fx:id="patientIdField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                                        </GridPane>
+                                        <Button text="Find Patient" onAction="#onFindPatientClick"/>
+                                        <Separator/>
+                                        <Label text="Patient Details:"/>
+                                        <TextArea fx:id="foundPatientDetailsArea" editable="false" prefHeight="100" wrapText="true"/>
+                                        <Button fx:id="sendToExaminerButton" text="Send to Examiner" onAction="#onSendToExaminerClick" disable="true"/>
+                                    </VBox>
+                                </HBox>
+
+                                <Label fx:id="receptionStatusLabel" styleClass="status-label"/>
+                                <Separator/>
+                                <Label text="Registered Patients (Waiting):" styleClass="sub-header-label"/>
+                                <ListView fx:id="registeredPatientsListView" prefHeight="250"/>
+                            </VBox>
+                        </ScrollPane>
+                    </Tab>
+                    <Tab fx:id="examinerTab" text="Examiner Dashboard" closable="false">
+                        <ScrollPane fitToWidth="true" fitToHeight="true" style="-fx-background-color: transparent; -fx-background: transparent;">
+                            <VBox spacing="20" alignment="TOP_LEFT" styleClass="card">
+                                <Label text="Examiner Dashboard" styleClass="header-label"/>
+
+                                <HBox spacing="15" alignment="CENTER_LEFT">
+                                    <Label text="Select Patient:" style="-fx-font-weight: bold;"/>
+                                    <ComboBox fx:id="examinerPatientComboBox" promptText="Select Patient" prefWidth="300"/>
+                                </HBox>
+
+                                <GridPane hgap="20" vgap="15" styleClass="form-grid">
+                                    <Label text="Medical History" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                                    <TextArea fx:id="medicalHistoryField" GridPane.columnIndex="1" GridPane.rowIndex="0" prefHeight="100" wrapText="true"/>
+                                    <Label text="Pain Description" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                                    <TextArea fx:id="painDescriptionField" GridPane.columnIndex="1" GridPane.rowIndex="1" prefHeight="100" wrapText="true"/>
+                                    <Label text="Temperature (°C):" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                                    <TextField fx:id="temperatureField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                                    <Label text="Weight (kg):" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                                    <TextField fx:id="weightField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                                    <Label text="Blood Pressure:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                                    <TextField fx:id="bpField" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                                </GridPane>
+
+                                <HBox spacing="15" alignment="CENTER_LEFT">
+                                    <Label text="Assign Doctor:" style="-fx-font-weight: bold;"/>
+                                    <ComboBox fx:id="doctorComboBox" promptText="Select Doctor" prefWidth="300"/>
+                                </HBox>
+
+                                <Button fx:id="submitVitalsButton" text="Submit Vitals &amp; Assign" onAction="#onSubmitVitalsClick" styleClass="button-secondary" disable="true"/>
+
+                                <Separator/>
+                                <Label text="Schedule Appointment" styleClass="sub-header-label"/>
+                                <GridPane hgap="20" vgap="15" styleClass="form-grid">
+                                    <Label text="Date:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                                    <DatePicker fx:id="appointmentDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                                    <Label text="Time:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                                    <TextField fx:id="appointmentTimeField" promptText="HH:mm" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                                    <Label text="Select Doctor:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                                    <ComboBox fx:id="appointmentDoctorComboBox" promptText="Select Doctor" GridPane.columnIndex="1" GridPane.rowIndex="2" prefWidth="220"/>
+                                </GridPane>
+                                <Button fx:id="createAppointmentButton" text="Create Appointment" onAction="#onCreateAppointmentClick" styleClass="button-secondary"/>
+
+                                <Label fx:id="examinerStatusLabel" styleClass="status-label"/>
+                            </VBox>
+                        </ScrollPane>
+                    </Tab>
+                    <Tab fx:id="doctorTab" text="Doctor Dashboard" closable="false">
+                        <content>
+                            <ScrollPane fitToWidth="true" fitToHeight="true">
+                                <VBox spacing="15" styleClass="card">
+                                    <Label text="Doctor Dashboard" styleClass="header-label"/>
+                                    <Label fx:id="doctorInfoLabel" style="-fx-font-style: italic; -fx-text-fill: #546E7A; -fx-font-size: 14px;"/>
+
+                                    <SplitPane dividerPositions="0.6" orientation="VERTICAL" VBox.vgrow="ALWAYS">
+                                        <items>
+                                            <VBox spacing="10" VBox.vgrow="ALWAYS">
+                                                <Label text="Assigned Patients:" styleClass="sub-header-label" style="-fx-font-weight: bold;"/>
+                                                <ListView fx:id="doctorPatientsListView" prefHeight="150"/>
+                                                <Label text="Patient Details:" styleClass="sub-header-label" style="-fx-font-weight: bold;"/>
+                                                <TextArea fx:id="patientDetailsArea" editable="false" wrapText="true" VBox.vgrow="ALWAYS"/>
+                                                <Label text="Prescription:" styleClass="sub-header-label" style="-fx-font-weight: bold;"/>
+                                                <TextArea fx:id="prescriptionArea" wrapText="true" promptText="Enter prescription here..." prefHeight="100"/>
+                                                <Button text="Send to Pharmacy" onAction="#onSendToPharmacyClick" styleClass="button-outline"/>
+                                            </VBox>
+
+                                            <VBox spacing="10" VBox.vgrow="ALWAYS">
+                                                <Label text="Order Lab Tests" styleClass="sub-header-label" style="-fx-font-weight: bold;"/>
+                                                <TreeTableView fx:id="labTestTreeTableView" VBox.vgrow="ALWAYS">
+                                                    <columns>
+                                                        <TreeTableColumn fx:id="testNameTreeTableColumn" prefWidth="250" text="Test Name"/>
+                                                        <TreeTableColumn fx:id="selectTestTreeTableColumn" prefWidth="80" text="Select"/>
+                                                    </columns>
+                                                </TreeTableView>
+                                                <Button text="Send to Lab" onAction="#onSendToLabClick" styleClass="button-outline"/>
+                                            </VBox>
+                                        </items>
+                                    </SplitPane>
+
+                                    <HBox spacing="15" alignment="CENTER_LEFT" style="-fx-padding: 15 0 0 0;">
+                                        <Button text="Mark Treated" onAction="#onMarkTreatedClick" styleClass="button-secondary"/>
+                                        <Button text="Mark Absent" onAction="#onMarkAbsentClick" styleClass="button-danger"/>
+                                        <Button text="Reschedule" onAction="#onRescheduleClick" styleClass="button-outline"/>
+                                    </HBox>
+                                    <Separator/>
+
+                                    <Label text="Transfer Patient:" styleClass="sub-header-label" style="-fx-font-weight: bold;"/>
+                                    <GridPane hgap="15" vgap="10" styleClass="form-grid">
+                                        <Label text="Transfer to:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                                        <ComboBox fx:id="transferDoctorComboBox" promptText="Select New Doctor" GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="300"/>
+                                        <Label text="Reason:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                                        <TextArea fx:id="transferReasonArea" prefHeight="60" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                                        <Button text="Transfer" onAction="#onTransferClick" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                                    </GridPane>
+                                    <Label fx:id="doctorStatusLabel" styleClass="status-label"/>
+                                </VBox>
+                            </ScrollPane>
+                        </content>
+                    </Tab>
+                    <Tab fx:id="laboratoryTab" text="Laboratory Dashboard" closable="false">
+                        <ScrollPane fitToWidth="true" fitToHeight="true" style="-fx-background-color: transparent; -fx-background: transparent;">
+                            <VBox spacing="15" alignment="TOP_LEFT" styleClass="card">
+                                <Label text="Laboratory Dashboard" styleClass="header-label"/>
+                                <Label text="Patients Pending Lab Tests:" styleClass="sub-header-label"/>
+                                <ListView fx:id="laboratoryPatientsListView" prefHeight="400"/>
+                                <Label text="Ordered Tests:" styleClass="sub-header-label"/>
+                                <TextArea fx:id="labTestsArea" editable="false" prefHeight="100" wrapText="true"/>
+                                <HBox spacing="15">
+                                    <TextField fx:id="labResultsField" promptText="Enter Lab Results" HBox.hgrow="ALWAYS"/>
+                                    <Button text="Submit Results" onAction="#onSubmitLabResultsClick" styleClass="button-secondary"/>
+                                </HBox>
+                                <Label fx:id="labStatusLabel" styleClass="status-label"/>
+                            </VBox>
+                        </ScrollPane>
+                    </Tab>
+                    <Tab fx:id="pharmacyTab" text="Pharmacy Dashboard" closable="false">
+                        <ScrollPane fitToWidth="true" fitToHeight="true" style="-fx-background-color: transparent; -fx-background: transparent;">
+                            <VBox spacing="15" alignment="TOP_LEFT" styleClass="card">
+                                <Label text="Pharmacy Dashboard" styleClass="header-label"/>
+                                <HBox spacing="25">
+                                    <VBox spacing="10" HBox.hgrow="ALWAYS">
+                                        <Label text="Patients Pending Medication:" styleClass="sub-header-label"/>
+                                        <ListView fx:id="pharmacyPatientsListView" prefHeight="400"/>
+                                    </VBox>
+                                    <VBox spacing="10" HBox.hgrow="ALWAYS">
+                                        <Label text="Prescription Details:" styleClass="sub-header-label"/>
+                                        <TextArea fx:id="pharmacyPrescriptionArea" prefHeight="400" editable="false" wrapText="true"/>
+                                    </VBox>
+                                </HBox>
+                                <Button text="Dispense Medication" styleClass="button-secondary"/>
+                                <Label fx:id="pharmacyStatusLabel" styleClass="status-label"/>
+                            </VBox>
+                        </ScrollPane>
+                    </Tab>
+                </tabs>
+            </TabPane>
+        </center>
+    </BorderPane>
+</StackPane>
